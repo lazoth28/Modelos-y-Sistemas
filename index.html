@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGA — Sistema de Gestión Académica</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">◈</span>
+      <div>
+        <div class="logo-title">SGA</div>
+        <div class="logo-sub">Gestión Académica</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-section="dashboard">
+        <span class="nav-icon">⊞</span> Dashboard
+      </button>
+      <button class="nav-btn" data-section="estudiantes">
+        <span class="nav-icon">⊹</span> Estudiantes
+      </button>
+      <button class="nav-btn" data-section="materias">
+        <span class="nav-icon">⊿</span> Materias
+      </button>
+      <button class="nav-btn" data-section="calificaciones">
+        <span class="nav-icon">◎</span> Calificaciones
+      </button>
+      <button class="nav-btn" data-section="boletines">
+        <span class="nav-icon">≡</span> Boletines
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-danger-sm" id="btn-reset">
+        ↺ Resetear datos
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-actions">
+        <span class="badge-info" id="topbar-count">Cargando...</span>
+      </div>
+    </header>
+
+    <!-- SECTION: DASHBOARD -->
+    <section class="section active" id="section-dashboard">
+      <div class="section-header">
+        <h1>Panel General</h1>
+        <p>Resumen del estado académico actual</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" id="stat-estudiantes">
+          <div class="stat-icon">⊹</div>
+          <div class="stat-num" id="num-estudiantes">0</div>
+          <div class="stat-label">Estudiantes</div>
+        </div>
+        <div class="stat-card" id="stat-materias">
+          <div class="stat-icon">⊿</div>
+          <div class="stat-num" id="num-materias">0</div>
+          <div class="stat-label">Materias</div>
+        </div>
+        <div class="stat-card aprobado-card">
+          <div class="stat-icon">✓</div>
+          <div class="stat-num" id="num-aprobados">0</div>
+          <div class="stat-label">Aprobados</div>
+        </div>
+        <div class="stat-card proceso-card">
+          <div class="stat-icon">◐</div>
+          <div class="stat-num" id="num-proceso">0</div>
+          <div class="stat-label">En Proceso</div>
+        </div>
+        <div class="stat-card desaprobado-card">
+          <div class="stat-icon">✕</div>
+          <div class="stat-num" id="num-desaprobados">0</div>
+          <div class="stat-label">Desaprobados</div>
+        </div>
+      </div>
+
+      <div class="dashboard-bottom">
+        <div class="card" style="flex:1">
+          <div class="card-header">Últimas calificaciones cargadas</div>
+          <div id="ultimas-notas" class="lista-simple">
+            <p class="empty-msg">Sin calificaciones aún.</p>
+          </div>
+        </div>
+        <div class="card" style="flex:1">
+          <div class="card-header">Distribución por situación</div>
+          <div id="distribucion-chart" class="dist-chart">
+            <div class="dist-bar-wrap">
+              <span class="dist-label aprobado-txt">Aprobado</span>
+              <div class="dist-track">
+                <div class="dist-fill aprobado-fill" id="fill-aprobado" style="width:0%"></div>
+              </div>
+              <span class="dist-pct" id="pct-aprobado">0%</span>
+            </div>
+            <div class="dist-bar-wrap">
+              <span class="dist-label proceso-txt">En Proceso</span>
+              <div class="dist-track">
+                <div class="dist-fill proceso-fill" id="fill-proceso" style="width:0%"></div>
+              </div>
+              <span class="dist-pct" id="pct-proceso">0%</span>
+            </div>
+            <div class="dist-bar-wrap">
+              <span class="dist-label desaprobado-txt">Desaprobado</span>
+              <div class="dist-track">
+                <div class="dist-fill desaprobado-fill" id="fill-desaprobado" style="width:0%"></div>
+              </div>
+              <span class="dist-pct" id="pct-desaprobado">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: ESTUDIANTES -->
+    <section class="section" id="section-estudiantes">
+      <div class="section-header">
+        <h1>Estudiantes</h1>
+        <p>Registrá los alumnos del sistema</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">Nuevo estudiante</div>
+          <form id="form-estudiante" autocomplete="off">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input type="text" id="est-nombre" placeholder="Ej: Valentina López" required />
+            </div>
+            <div class="form-group">
+              <label>Curso / División</label>
+              <select id="est-curso">
+                <option value="">— Seleccioná —</option>
+                <option>1° A</option>
+                <option>1° B</option>
+                <option>2° A</option>
+                <option>2° B</option>
+                <option>3° A</option>
+                <option>3° B</option>
+                <option>4° A</option>
+                <option>4° B</option>
+                <option>5° A</option>
+                <option>5° B</option>
+                <option>6° A</option>
+                <option>6° B</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">+ Agregar estudiante</button>
+          </form>
+        </div>
+
+        <div class="card" style="overflow:hidden">
+          <div class="card-header">
+            Lista de estudiantes
+            <span class="chip" id="chip-est">0</span>
+          </div>
+          <div id="tabla-estudiantes" class="scroll-table">
+            <p class="empty-msg">Aún no hay estudiantes registrados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: MATERIAS -->
+    <section class="section" id="section-materias">
+      <div class="section-header">
+        <h1>Materias</h1>
+        <p>Configurá las asignaturas del sistema</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">Nueva materia</div>
+          <form id="form-materia" autocomplete="off">
+            <div class="form-group">
+              <label>Nombre de la materia</label>
+              <input type="text" id="mat-nombre" placeholder="Ej: Matemática" required />
+            </div>
+            <div class="form-group">
+              <label>Área</label>
+              <select id="mat-area">
+                <option value="">— Seleccioná —</option>
+                <option>Ciencias Exactas</option>
+                <option>Ciencias Naturales</option>
+                <option>Ciencias Sociales</option>
+                <option>Lengua y Literatura</option>
+                <option>Idiomas</option>
+                <option>Arte y Expresión</option>
+                <option>Educación Física</option>
+                <option>Tecnología</option>
+                <option>Otra</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">+ Agregar materia</button>
+          </form>
+        </div>
+
+        <div class="card" style="overflow:hidden">
+          <div class="card-header">
+            Materias registradas
+            <span class="chip" id="chip-mat">0</span>
+          </div>
+          <div id="tabla-materias" class="scroll-table">
+            <p class="empty-msg">Aún no hay materias registradas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CALIFICACIONES -->
+    <section class="section" id="section-calificaciones">
+      <div class="section-header">
+        <h1>Calificaciones</h1>
+        <p>Registrá notas por estudiante y materia</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">Cargar calificación</div>
+          <form id="form-calificacion" autocomplete="off">
+            <div class="form-group">
+              <label>Estudiante</label>
+              <select id="cal-estudiante" required>
+                <option value="">— Seleccioná —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Materia</label>
+              <select id="cal-materia" required>
+                <option value="">— Seleccioná —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Nota (1 – 10)</label>
+              <input type="number" id="cal-nota" min="1" max="10" placeholder="Ej: 7" required />
+            </div>
+            <div class="form-group">
+              <label>Período</label>
+              <select id="cal-periodo">
+                <option>1° Bimestre</option>
+                <option>2° Bimestre</option>
+                <option>3° Bimestre</option>
+                <option>4° Bimestre</option>
+                <option>Recuperatorio</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">✓ Registrar nota</button>
+          </form>
+        </div>
+
+        <div class="card" style="overflow:hidden">
+          <div class="card-header">
+            Historial de notas
+            <span class="chip" id="chip-cal">0</span>
+          </div>
+          <div id="tabla-calificaciones" class="scroll-table">
+            <p class="empty-msg">Aún no hay calificaciones.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: BOLETINES -->
+    <section class="section" id="section-boletines">
+      <div class="section-header">
+        <h1>Boletines</h1>
+        <p>Situación académica por estudiante</p>
+      </div>
+
+      <div class="filter-bar">
+        <select id="filtro-curso">
+          <option value="">Todos los cursos</option>
+        </select>
+        <select id="filtro-situacion">
+          <option value="">Todas las situaciones</option>
+          <option value="Aprobado">Aprobado</option>
+          <option value="En proceso">En proceso</option>
+          <option value="Desaprobado">Desaprobado</option>
+        </select>
+        <button class="btn-outline" id="btn-filtrar">Filtrar</button>
+      </div>
+
+      <div id="boletines-grid" class="boletines-grid">
+        <p class="empty-msg">Cargá estudiantes y calificaciones para ver los boletines.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
