@@ -47,7 +47,6 @@ Este proyecto fue realizado con fines educativos.
 * Paloma Cesar
 * Melina Dettin
 * Lazo Thiago
-* Lazo Thiago
 * Juan Torres
 * Alejo Gomez
 
