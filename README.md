@@ -12,7 +12,7 @@ Este proyecto fue realizado con fines educativos.
 
 ---
 
-##  Funcionalidades
+ Funcionalidades
 
 * Registro e inicio de sesión
 * Gestión de clientes
